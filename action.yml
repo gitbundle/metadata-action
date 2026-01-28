@@ -7,6 +7,26 @@ branding:
   color: 'blue'
 
 inputs:
+  repository:
+    description: >
+      Override the GitHub repository in the format `owner/name` or just `name`.
+      Useful for self-hosted Git services or repositories not hosted on github.com.
+    required: false
+  description:
+    description: >
+      Override the repository description. Useful for self-hosted Git services or
+      repositories not hosted on github.com.
+    required: false
+  html_url:
+    description: >
+      Override the repository HTML URL. Useful for self-hosted Git services or
+      repositories not hosted on github.com.
+    required: false
+  license:
+    description: >
+      Override the repository license (SPDX identifier). Useful for self-hosted Git
+      services or repositories not hosted on github.com.
+    required: false
   context:
     description: 'Where to get context data. Allowed options are "workflow"  (default), "git".'
     default: "workflow"

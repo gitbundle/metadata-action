@@ -6,6 +6,7 @@ import {Util} from '@docker/actions-toolkit/lib/util';
 
 import {getContext, getInputs, Inputs} from './context';
 import {Meta, Version} from './meta';
+import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github';
 
 actionsToolkit.run(
   // main
@@ -13,7 +14,23 @@ actionsToolkit.run(
     const inputs: Inputs = getInputs();
     const toolkit = new Toolkit({githubToken: inputs.githubToken});
     const context = await getContext(inputs.context, toolkit);
-    const repo = await toolkit.github.repoData();
+    let repo = {};
+    try {
+      if (inputs.repository) {
+        const repoName = inputs.repository.includes('/') ? inputs.repository.split('/')[1] : inputs.repository;
+        repo = {
+          name: repoName,
+          description: inputs.description || '',
+          html_url: inputs.html_url || '',
+          license: inputs.license ? {spdx_id: inputs.license} : undefined
+        };
+      } else {
+        repo = await toolkit.github.repoData();
+      }
+    } catch (err) {
+      core.warning(`Failed to fetch GitHub repository data: ${err}`);
+    }
+
     const setOutput = outputEnvEnabled() ? setOutputAndEnv : core.setOutput;
 
     await core.group(`Context info`, async () => {
@@ -34,7 +51,7 @@ actionsToolkit.run(
       });
     }
 
-    const meta: Meta = new Meta(inputs, context, repo);
+    const meta: Meta = new Meta(inputs, context, repo as GitHubRepo);
 
     const version: Version = meta.version;
     if (meta.version.main == undefined || meta.version.main.length == 0) {

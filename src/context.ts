@@ -10,6 +10,10 @@ export interface Context extends GithubContext {
 }
 
 export interface Inputs {
+  repository: string;
+  description: string;
+  html_url: string;
+  license: string;
   context: ContextSource;
   images: string[];
   tags: string[];
@@ -25,6 +29,10 @@ export interface Inputs {
 
 export function getInputs(): Inputs {
   return {
+    repository: core.getInput('repository') || '',
+    description: core.getInput('description') || '',
+    html_url: core.getInput('html_url') || '',
+    license: core.getInput('license') || '',
     context: (core.getInput('context') || ContextSource.workflow) as ContextSource,
     images: Util.getInputList('images', {ignoreComma: true, comment: '#'}),
     tags: Util.getInputList('tags', {ignoreComma: true, comment: '#'}),

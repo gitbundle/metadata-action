@@ -295,6 +295,10 @@ The following inputs can be used as `step.with` keys:
 
 | Name              | Type   | Description                                                                  |
 |-------------------|--------|------------------------------------------------------------------------------|
+| `repository`      | String | Override the GitHub repository in the format `owner/name` or just `name`     |
+| `description`     | String | Override the repository description.                                         |
+| `html_url`        | String | Override the repository HTML URL.                                            |
+| `license`         | String | Override the repository license.                                             |
 | `context`         | String | Where to get context data. Allowed options are: `workflow` (default), `git`. |
 | `images`          | List   | List of Docker images to use as base name for tags                           |
 | `tags`            | List   | List of [tags](#tags-input) as key-value pair attributes                     |
